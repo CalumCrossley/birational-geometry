@@ -15,6 +15,7 @@
 \newtheorem*{theorem}{Theorem}
 \newtheorem*{corollary}{Corollary}
 \newtheorem*{lemma}{Lemma}
+\newtheorem*{proposition}{Proposition}
 
 \theoremstyle{definition}
 \newtheorem*{definition}{Definition}
@@ -27,6 +28,10 @@
 \DeclareMathOperator{\exc}{exc}
 \DeclareMathOperator{\supp}{supp}
 \DeclareMathOperator{\cosupp}{cosupp}
+\DeclareMathOperator{\mld}{mld}
+\DeclareMathOperator{\lct}{lct}
+\DeclareMathOperator{\LCT}{LCT}
+\DeclareMathOperator{\Res}{Res}
 
 \newcommand{\sm}{\mathrm{sm}}
 
@@ -35,15 +40,16 @@
 \renewcommand{\O}{\mathcal{O}}
 \newcommand{\A}{\mathbb{A}}
 \renewcommand{\P}{\mathbb{P}}
+\newcommand{\F}{\mathbb{F}}
 \newcommand{\N}{\mathbb{N}}
 \newcommand{\Z}{\mathbb{Z}}
 \newcommand{\Q}{\mathbb{Q}}
 \newcommand{\R}{\mathbb{R}}
 \newcommand{\C}{\mathbb{C}}
 
-\title{Notes for ``Birational Geometry'' by Calum Spicer}
-\author{Calum Crossley}
-\date{LTCC 2023-2024}
+\title{LTCC 2023-2024: Birational Geometry}
+\author{Calum Spicer}
+\date{}
 
 \begin{document}
 
@@ -94,7 +100,7 @@ curves, and foliations of $\P^2$, we see that singularities naturally arise.
     $\I\subseteq\O_X$ be an ideal sheaf. Then there exists a composition
     $b:X'\to X$ of blowups in smooth centres (i.e. along subvarieties which are
     smooth) contained in the singular locus of $X$, such that the cosupport of
-    $b^{-1}\I=\I\cdot\O_X$ is a simple normal crossings divisor.
+    $b^{-1}\I=\I\cdot\O_{X'}$ is a simple normal crossings divisor.
 \end{theorem}
 
 \begin{remark}
@@ -138,7 +144,7 @@ So the question becomes: what ``nice'' singularities should we allow?
 \begin{definition}
     Let $f:(p,X)\to(q,Z)$ be a morphism of germs of smooth varieties. (Think of
     the germs as $\Spec\O_{X,p}$, or other possibilities.) We say $f$ is
-    \emph{toroidal} if there exist \'Etale / analytic / formal coordinates
+    \emph{toroidal} if there exist \'etale / analytic / formal coordinates
     $x_1,\ldots,x_n$ and $z_1,\ldots,z_k$ such that $f$ can be written as
     \begin{equation*}
         z_{i_l} = x_1^{m_{1,i_l}}\cdots x_n^{m_{n,i_l}}
@@ -307,6 +313,275 @@ The case of relative dimension 1 is known by work of de Jong.
     \begin{equation*}
         K_{\P^n}=-\sum_{i=0}^nH=-(n+1)H.
     \end{equation*}
+\end{example}
+
+\begin{exercise}
+    Which quotient singularities are toric? (Recall that a quotient singularity
+    is given by $\A^n/G=\Spec k[x_1,\ldots,x_n]^G$ for $G$ a finite group.)
+    % E_6,E_7,E_8 not toric, A_n toric
+\end{exercise}
+
+\section*{Canonical divisors and discrepancies}
+
+Let $X$ be a smooth variety, and $W\subseteq X$ a smooth subvariety of
+codimension $k$. Consider the blowup $b:X'\to X$ in $W$. What is the relation
+between $K_X$ and $K_{X'}$? We have the exceptional divisor $E$, with
+\begin{equation*}
+    K_{X'} = b^*K_X + aE.
+\end{equation*}
+
+\begin{proposition}
+    In the above setup, we have $a=k-1$.
+\end{proposition}
+
+\begin{proof}
+    This is a local question, and everything is toroidal, and hence the setup is
+    locally isomorphic to the blowup of a toric variety in a torus invariant
+    centre. (Using Artin approximation.) So we are reduced to the case
+    $X'\to\A^n$, where $K_{\A^n}=-\sum\{x_i=0\}$. Then
+    \begin{equation*}
+        -K_{X'} = \sum\{x_i=0\}' + E,
+    \end{equation*}
+    where $(\cdot)'$ denotes the strict transform, and
+    \begin{equation*}
+        -b^*\sum\{x_i=0\} = \sum\{x_i=0\}' + kE
+    \end{equation*}
+    since $W$ is given by $\{x_1=\cdots=x_k=0\}$.
+\end{proof}
+
+\begin{exercise}
+    If $b$ is a weighted blowup, what happens to $a$?
+\end{exercise}
+
+More generally, if $b:X'\to X$ is birational we have
+\begin{equation*}
+    K_{X'} = b^*K_X + \sum_{\text{$E_i$ exceptional}}a(E_i,X)E_i,
+\end{equation*}
+where $a(E_i,X)$ are called the \emph{discrepancies}. Intuitively, smaller
+discrepancies mean worse singularities.
+
+\begin{remark}
+    For a general birational morphism, we define the exceptional divisors as the
+    components of the complement of the maximal domain of definition.
+    Equivalently, these are the divisors $E$ in $X'$ such that $b(E)$ is not a
+    divisor in $X$. The non-existence of exceptional divisors does not imply
+    that the map is an isomorphism; there exist birational morphisms $X'\to X$
+    with $\dim X=\dim X'=3$ contracting curves to points.
+\end{remark}
+
+\begin{example}
+    Consider $C\subseteq\P^2$ a smooth curve of degree $d$, and $X\subseteq\A^3$
+    the cone over $C$. (So $X=\Spec\oplus_{n=0}^\infty H^0(C,\O(n)|_C)$, or
+    equivalently $X=\overline{q^{-1}(C)}$ for $q:\A^3\setminus\{0\}\to\P^2$.)
+    Consider $b:X'\to X$ the blowup at the cone vertex, with exceptional divisor
+    $E\cong C$. The discrepancy is as follows:
+    \begin{center}
+        \begin{tabular}{c|c|c}
+            & $a(E,X)$ & geometry of $X'$ \\
+            \hline
+            $d=1$ & $1$ & smooth \\
+            $d=2$ & $0$ & (Du Val) singularity \\
+            $d=3$ & $-1$ & more singular \\
+            \vdots & \vdots & \vdots
+        \end{tabular}
+    \end{center}
+    \begin{proof}
+        The degree-genus formula gives
+        \begin{align*}
+            (d-1)(d-2) - 2
+                &= 2g-2 \\
+                &= K_C \\
+                &= K_E \\
+                &= (K_{X'}+E)|_E \qquad \text{by adjunction} \\
+                &= (b^*K_X+(a+1)E)|_E \\
+                &= (a+1)\cdot E|_E,
+        \end{align*}
+        where $b^*K_X\cdot E=0$ by the projection formula. Now let $Y$ be the
+        blowup of $\A^3$ at the origin, with exceptional divisor $F\cong\P^2$.
+        Then $X'\subseteq Y$ with $F|_{X'}=E$, and $F|_F=\O(-1)$, so we get
+        \begin{align*}
+            E|_E &= (F|_{X'})|_E \\
+                 &= (F|_F)|_{X'} \\
+                 &= \O(-1)|_{X'\cap F} \\
+                 &= \O(-1)|_E = -d
+        \end{align*}
+        since $E\cong C$ is a degree $d$ curve in $F\cong\P^2$. Hence $a=2-d$.
+    \end{proof}
+\end{example}
+
+\begin{remark}
+    Recall the adjunction formula: If $X$ is a smooth surface, and $C$ is a
+    smooth curve in $X$, then $(\omega_X\otimes\O(C))|_C\cong\omega_C$.
+    Equivalently $K_C=(K_X+C)|_C$.
+\end{remark}
+
+\begin{remark}
+    Recall the projection formula: If $f:X\to Y$, with $W\subseteq X$ and $L$ a
+    line bundle on $X$, then $L|_{f(W)}=f_*((f^*L)|_W)$. Here $f_*$ is the sheaf
+    pushforward, which in the case of connected fibres is the same as the
+    divisor / cycle pushforward. (In the example above this identifies the
+    fiber over $\omega_X$ at the origin with the global sections of
+    $b^*\omega_X|_E$, and the former is one-dimensional so $b^*\omega_X|_E$ is
+    trivial. One could also note that $b^*\omega_X|_E$ is the pullback of the
+    line bundle $\omega_X$ along the map $E\to X$, which factors through a
+    point.)
+\end{remark}
+
+\section*{Log discrepancies}
+
+It is often more natural to work with pairs $(X,\Delta)$, for example $(X',E)$
+in the above examples of blowups.
+
+\begin{definition}
+    A \emph{log pair} $(X,\Delta)$ is a normal variety $X$ together with
+    a $\Q$-Weil divisor $\Delta$ such that $K_X+\Delta$ is $\Q$-Cartier, i.e.
+    $n(K_X+\Delta)$ is Cartier for some $n>0$.
+\end{definition}
+
+Given $b:X'\to X$ birational, we have
+\begin{equation*}
+    K_{X'} + b_*^{-1}\Delta + \sum_{\text{$E_i$ exceptional}}E_i
+    = b^*(K_X+\Delta) + \sum_{\text{$E_i$ exceptional}}a(E_i,X,\Delta)E_i,
+\end{equation*}
+where $a(E_i,X,\Delta)$ are the \emph{log discrepancies}.
+
+\begin{definition}
+    A log pair $(X,\Delta)$ is \emph{log canonical} if for all birational maps
+    $b:X'\to X$ and all exceptional divisors $E_i$ we have
+    $a(E_i,X,\Delta)\ge0$. It is \emph{Kawamata log terminal} (KLT) if we have
+    the same with $a(E_i,X,\Delta)>0$ and $\Delta$ has $\Q$-coefficients
+    strictly between 0 and 1.
+\end{definition}
+
+\begin{remark}
+    In this context ``logarithmic'' refers to working with boundaries (e.g.
+    $\Delta$). The philosophy is that for $D$ a reduced divisor, the geometry of
+    $(X,D)$ correpsonds to the geometry of $X\setminus D$. For example
+    $H^i(\Omega^j_X(\log D))=H^{j,i}(X\setminus D)$. (If $X$ is smooth and $D$
+    is a simple normal crossings divisor then $\Omega^1_X(\log D)$ is analytic
+    locally generated by $dx_1/x_1,\ldots,dx_k/x_k,dx_{k+1},\ldots,dx_n$ where
+    $D=\{x_1=\cdots=x_k=0\}$.)
+\end{remark}
+
+\begin{example}
+    Consider $(X,\sum_ia_iD_i)$ where $X$ is smooth, and $\sum_iD_i$ is a simple
+    normal crossings divisor.
+    \begin{itemize}
+        \item If $0\le a_i\le1$ then this is log canonical.
+        \item If $0<a_i<1$ then this is KLT.
+    \end{itemize}
+    \begin{proof}[Proof sketch]
+        Assume $b:X'\to X$ is the blowup in $W=D_1\cap\cdots\cap D_k$. Then
+        \begin{equation*}
+            K_{X'} + \sum_ia_iD_i' + E
+                = b^*\biggl(K_X + \sum_ia_iD_i\biggr) + aE,
+        \end{equation*}
+        where $a$ is the discrepancy. Now $K_{X'}=b^*K_X+(k-1)E$, and
+        \begin{equation*}
+            b^*\biggl(\sum_ia_iD_i\biggr) = \sum_ia_iD_i' + (a_1+\cdots+a_k)E,
+        \end{equation*}
+        so $a=k-(a_1+\cdots+a_k)$.
+    \end{proof}
+\end{example}
+
+\begin{example}
+    If $X$ is a toric variety with torus boundary $D$, then $(X,D)$ is log
+    canonical.
+\end{example}
+
+\begin{definition}
+    The \emph{minimal log discrepancy} of a pair $(X,\Delta)$ is
+    \begin{equation*}
+        \mld(X,\Delta) = \inf\{a(E,X,\Delta)\}
+    \end{equation*}
+    over all birational morphisms to $X$ and exceptional divisors $E$.
+\end{definition}
+
+\begin{remark}
+    The pair is log canonical iff $\mld(X,\Delta)\ge0$.
+\end{remark}
+
+\begin{proposition}
+    If $\mld(X,\Delta)<0$, then $\mld(X,\Delta)=-\infty$.
+\end{proposition}
+
+\begin{proof}[Proof sketch]
+    Consider the local model $(1+\varepsilon)\cdot\{x=0\}$ in $\A^2$ for
+    $\varepsilon>0$ under repeated blowups of the origin in the strict transform
+    of $\{x=0\}$. The pullback of $\{x=0\}$ is precisely the strict transform
+    plus the new canonical divisor, resulting in discrepancies $1-n\varepsilon$
+    where $n$ is the multiplicity of the exceptional divisor in the canonical
+    divisor, which grows without bound.
+\end{proof}
+
+\section*{Log canonical threshold}
+
+\begin{definition}
+    For a log pair $(X,\Delta)$, the \emph{log canonical threshold} of $(X,\Delta)$
+    with respect to an effective $\Q$-Cartier divisor $D$ is
+    \begin{equation*}
+        \lct(X,\Delta;D) = \sup\{t:\text{$(X,\Delta+t\cdot D)$ is log canonical}\}.
+    \end{equation*}
+\end{definition}
+
+\begin{example}
+    The pair $(\A^2,\{y^2=x^3\})$ is not log canonical, which we can see using
+    the following log resolution:
+    \begin{center}
+        \includegraphics[scale=0.6]{log_resolution}
+    \end{center}
+    The singularity gives multiplicity two for $E_1$ when pulling back the
+    curve, giving $E_1$ and $E_2$ discrepancy 0 and $E_3$ discrepancy $-1$.
+    However for $\frac{5}{6}\{y^2=x^3\}$ the discrepancies are $\frac{2}{3}$ and
+    $\frac{1}{2}$ for $E_1$ and $E_2$, so $E_3$ gets discrepancy 0 and
+    $(\A^2,\frac{5}{6}\{y^2=x^3\})$ is log canonical. Hence
+    $\frac{5}{6}\le\lct(\A^2;\{y^2=x^3\})\le1$.
+\end{example}
+
+\begin{theorem}[ACC for LCT; Hacon--McKernan--Xu]
+    The set
+    \begin{equation*}
+        \LCT(n) = \{\lct(X;D)
+            :\text{$\dim(X)=n$, $D$ an integral Weil divisor}\}
+    \end{equation*}
+    satisfies the ascending chain condition, i.e. if
+    $\lambda_1\le\lambda_2\le\cdots$ is a sequence of values in $\LCT(n)$ then
+    $\lambda_i=\lambda_{i=1}$ for $i\gg0$.
+\end{theorem}
+
+\section*{Adjunction}
+
+\begin{proposition}[The adjunction formula]
+    Let $D\subseteq X$ be a smooth divisor in a smooth variety. Then
+    $\omega_X(D)|_D\cong\omega_D$, i.e. $(K_X+D)|_D\sim K_D$.
+\end{proposition}
+
+\begin{proof}[Proof 1]
+    The short exact sequence $0\to T_D\to T_X|_D\to N_{D/X}\to0$ gives
+    $\det T_D\otimes\det N_{D/X}\cong\det T_X|_D$, so
+    $\omega_D^\vee\otimes N_{D/X}\cong \omega_X^\vee|_D$. Then note that
+    $N_{D/X}\cong\O(D)|_D$.
+\end{proof}
+
+\begin{proof}[Proof 2]
+    Near a point in $D$ choose coordinates $x_1,\ldots,x_n$ with $D=\{x_1=0\}$.
+    Locally, a section of $\omega_X(D)$ is of the form
+    $f\frac{dx_1}{x_1}\wedge dx_2\wedge\cdots\wedge dx_n$ where $f\in\O_X$. We
+    define the Poincar\'e residue $\Res:\omega_X(D)|_D\to\omega_D$ by
+    \begin{equation*}
+        f\frac{dx_1}{x_1}\wedge dx_2\wedge\cdots\wedge dx_n
+            \mapsto f|_D\cdot dx_2\wedge\cdots\wedge dx_n.
+    \end{equation*}
+    Note that this is in fact a well-defined map of sheaves. Locally, it is
+    surjective since $\alpha\in\omega_D$ lifts to a form $dx_1/x_1\wedge\alpha$
+    in $\omega_X(D)|_D$ with residue $\alpha$, and injective by construction, so
+    it is an isomorphism of sheaves.
+\end{proof}
+
+If either of $X$ or $D$ is singular then this can fail.
+
+\begin{example}
+    Let $\F_n=\P(\O_{\P^1}\oplus\O_{\P^1}(n))$, the Hirzebruch surface.
 \end{example}
 
 \end{document}
