@@ -8,6 +8,7 @@
 \usepackage{mathrsfs} % \mathscr
 \usepackage{amsthm}
 \usepackage{tikz-cd}
+\usepackage{stmaryrd} % \sslash
 
 \setlength{\parindent}{0pt}
 
@@ -23,8 +24,10 @@
 \newtheorem*{remark}{Remark}
 \newtheorem*{exercise}{Exercise}
 
+\DeclareMathOperator{\PGL}{PGL}
 \DeclareMathOperator{\Bl}{Bl}
 \DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Supp}{Supp}
 \DeclareMathOperator{\exc}{exc}
 \DeclareMathOperator{\supp}{supp}
 \DeclareMathOperator{\cosupp}{cosupp}
@@ -32,9 +35,16 @@
 \DeclareMathOperator{\lct}{lct}
 \DeclareMathOperator{\LCT}{LCT}
 \DeclareMathOperator{\Res}{Res}
+\DeclareMathOperator{\Hom}{Hom}
+
+\newcommand{\closure}[1]{\overline{#1}}
+\newcommand{\cat}[1]{\mathsf{#1}}
 
 \newcommand{\sm}{\mathrm{sm}}
+\newcommand{\Diff}{\mathrm{Diff}}
 
+\newcommand{\U}{\mathcal{U}}
+\newcommand{\M}{\mathcal{M}}
 \newcommand{\I}{\mathscr{I}}
 \newcommand{\J}{\mathscr{J}}
 \renewcommand{\O}{\mathcal{O}}
@@ -70,7 +80,7 @@ geometry, but in fact encompass a lot of the important ideas.
         subspaces, or analogously considering fibres in a fibre space.
 \end{itemize}
 
-\section*{Singularities and Adjunction}
+\section*{Singularities and adjunction}
 
 All schemes are considered over a field $k$ of characteristic 0.
 
@@ -268,9 +278,9 @@ The case of relative dimension 1 is known by work of de Jong.
     \begin{equation*}
         K_{\P^n} = -(n+1)\cdot H
     \end{equation*}
-    where $H$ is a hyperplane. (Take $dx_1\wedge\cdots\wedge dx_n$ on $\A^n$,
-    which extends to a rational $n$-form on $\P^n$ with a pole of order $n+1$
-    along the hyperplane at infinity.)
+    where $H$ is a hyperplane. (Take $dx_0\wedge\cdots\wedge dx_n$ on
+    $\A^{n+1}$, which extends to a rational $n$-form on $\P^n$ with a pole of
+    order $n+1$ along the hyperplane at infinity.)
 \end{example}
 
 \section*{Toric geometry}
@@ -546,7 +556,7 @@ where $a(E_i,X,\Delta)$ are the \emph{log discrepancies}.
     \end{equation*}
     satisfies the ascending chain condition, i.e. if
     $\lambda_1\le\lambda_2\le\cdots$ is a sequence of values in $\LCT(n)$ then
-    $\lambda_i=\lambda_{i=1}$ for $i\gg0$.
+    $\lambda_i=\lambda_{i-1}$ for $i\gg0$.
 \end{theorem}
 
 \section*{Adjunction}
@@ -581,7 +591,288 @@ where $a(E_i,X,\Delta)$ are the \emph{log discrepancies}.
 If either of $X$ or $D$ is singular then this can fail.
 
 \begin{example}
-    Let $\F_n=\P(\O_{\P^1}\oplus\O_{\P^1}(n))$, the Hirzebruch surface.
+    Let $\F_n=\P(\O_{\P^1}\oplus\O_{\P^1}(n))$, the Hirzebruch surface. We have
+    two rational curves $\Sigma_n=\P(\O_{\P^1})$ and
+    $\Sigma_{-n}=\P(\O_{\P^1}(n))$ together with the fibers $F$ satisfying
+    \begin{equation*}
+        F^2=0, \qquad \Sigma_n^2=n, \qquad \Sigma_{-n}^2=-n, \qquad
+        \Sigma_n\cdot\Sigma_{-n}=0, \qquad F\cdot\Sigma_{\pm n}=1.
+    \end{equation*}
+    For $n>0$, it is a fact that there exists a contraction $p:\F_n\to X$ of
+    $\Sigma_{-n}$. Here $X$ turns out to be the cone over the degree $n$
+    Veronese embedding of $\P^1$. Consider $C=p(F)$. To compute the log
+    discrepancy, suppose
+    \begin{equation*}
+        p^*(K_X+C) + (a-1)\Sigma_{-n} = K_{\F_n} + F.
+    \end{equation*}
+    By the projection formula we have $\Sigma_{-n}\cdot p^*(K_X+C)=0$, since $p$
+    contracts $\Sigma_{-n}$. On the other hand $\Sigma_{-n}\cdot K_{\F_n}=n-2$,
+    since $(K_{\F_n}+\Sigma_{-n})\cdot\Sigma_{-n}=K_{\Sigma_{-n}}=-2$ by
+    adjunction. Hence $n(1-a) =n-1$, so $a=1/n$. Now
+    $(K_X+C)\cdot C=p^*(K_X+C)\cdot F$ by the projection formula, and so
+    \begin{equation*}
+        (K_X+C)\cdot C
+            = (K_{\F_n}+F+(1-1/n)\Sigma_{-n})\cdot F
+            = -2 + 0 + (1-1/n)
+            \ne -2 = K_C.
+    \end{equation*}
+    Hence the adjunction formula fails for $C$ in $X$. In particular $X$ must be
+    singular.
 \end{example}
+
+\begin{theorem}
+    If $X$ is a normal variety, and $D\subset X$ is a normal reduced divisor,
+    then
+    \begin{equation*}
+        (K_X+D)|_D = K_D + \Diff
+    \end{equation*}
+    where $\Diff$ is a canonically determined divisor on $D$, called the
+    \emph{different}, such that
+    \begin{enumerate}
+        \item The different is effective; $\Diff\ge0$.
+
+        \item ``Adjunction for singularities'': If $(X,D)$ is log canonical in a
+            neighbourhood of $D$, then $(D,\Diff)$ is log canonical.
+
+        \item ``Inversion of adjunction'': If $(D,\Diff)$ is log canonical, then
+            $(X,D)$ is log canonical in a neighbourhood of $D$.
+    \end{enumerate}
+\end{theorem}
+
+\begin{proof}[Sketch proof]
+    Take a log resolution $p:(X',D')\to(X,D)$. Then
+    \begin{equation*}
+        p^*(K_X+D) = K_{X'}+D'+\Gamma
+    \end{equation*}
+    where $\Gamma$ is a $p$-exceptional divisor, and
+    \begin{equation*}
+        p^*(K_X+D)|_{D'} = (K_{X'}+D'+\Gamma)|_{D'} = K_{D'} + \Gamma|_{D'}
+    \end{equation*}
+    so we use $\Diff=p_*(\Gamma|_{D'})$.
+    \begin{enumerate}
+        \item Proof omitted; uses MMP.
+
+        \item If $(X,D)$ is log canonical, let $p:(X',D')\to(X,D)$ be a log
+            resolution. Then
+            \begin{equation*}
+                K_{X'} + D' + \sum E_i = p^*(K_X+D) + \sum a_iE_i
+            \end{equation*}
+            gives
+            \begin{equation*}
+                K_{D'} + \sum E_i|_{D'} = p^*(K_D+\Diff) + \sum a_iE_i|_{D'},
+            \end{equation*}
+            and $\sum E_i|_{D'}\ge\Diff'$, where $\Diff'$ is the strict
+            transform of the different, because the different must have been
+            blown up. Then
+            \begin{equation*}
+                K_{D'} + \Diff'
+                    + \sum_{E_i\cap\Diff'=\emptyset}E_i|_{D'}
+                    = p^*(K_D+\Diff) + \sum a_iE_i|_{D'},
+            \end{equation*}
+            so $(D,\Diff)$ is log canonical.
+
+        \item This is a corollary of the following theorem:
+    \end{enumerate}
+\end{proof}
+
+\begin{theorem}[Existence of log canonical modifications]
+    Let $(X,\Delta)$ be a log pair. There exists a birational map
+    $p:(X',\Delta')\to(X,\Delta)$, where $\Delta'$ is the strict transform of
+    $\Delta$, such that
+    \begin{enumerate}
+        \item $(X',\Delta'+\exc(p))$ is log canonical.
+        \item $K_{X'}+\Delta'+\exc(p)$ is $p$-ample.
+        \item $K_{X'}+\Delta'+\exc(p)=p^*(K_X+\Delta)+F$ where $-F\ge0$, and if
+            $F\ne0$ then every component of $\Delta'$ appears with a negative
+            coefficient.
+    \end{enumerate}
+\end{theorem}
+
+\begin{remark}
+    The notion ``$p$-ample'' in 2 means that there is a divisor $G$ on $X$ such
+    that $K_{X'}+\Delta'+\exc(p)+p^*G$ is ample. Note that 3 is a direct
+    consequence of 2, and implies that the log discrepancies are zero if
+    $(X,\Delta)$ is log canonical.
+\end{remark}
+
+\begin{proof}
+    The proof is via the MMP, see [BCHM].
+\end{proof}
+
+\begin{proof}[Proof of inversion of adjunction]
+    Consider the case $\Diff=0$. If $(X,D)$ is not log canonical, take a
+    log canonical modification $\pi:(X',D')\to(X,D)$, so
+    \begin{equation*}
+        K_{X'} + D' + \exc(\pi) = \pi^*(K_X+D) + F
+    \end{equation*}
+    with $-F\ge0$. Since $(X,D)$ is not log canonical we must have $F\ne0$, so
+    \begin{equation*}
+        K_{D'} + \exc(\pi)|_{D'} = \pi^*(K_{D'}) + F|_{D'}
+    \end{equation*}
+    where $F|_{D'}\ne0$ because every component of $D'$ appears in $F$ with a
+    negative coefficient. Hence $D'$ is not log canonical.
+\end{proof}
+
+\begin{corollary}
+    Suppose $(X,\Delta)\to T$ is a fibration, where $\dim T=1$. If
+    $(X_t,\Delta_t)$ is log canonical, then $(X,\Delta)$ is log canonical in a
+    neighbourhood of $t$.
+\end{corollary}
+
+\begin{remark}
+    Here a fibration means that $X\to T$ is a fibration (i.e. flat with
+    connected fibres), and for all components $D$ of $\Supp\Delta$ the
+    restriction $D\to T$ is also a fibration.
+\end{remark}
+
+\begin{remark}
+    Hence log canonicity is an open condition on the base.
+\end{remark}
+
+It is a fact that KLT surface singularities are precisely the quotient
+singularities. This is false in higher dimensions. There is even a
+classification of log canonical singularities on surfaces, but in higher
+dimensions the topology can be arbitrarily complicated.
+
+\begin{exercise}
+    If $X$ is a Calabi-Yau projective variety, show that the cone on $X$ is log
+    canonical.
+\end{exercise}
+
+\section*{Moduli of curves}
+
+The basic setup in moduli theory is a moduli functor:
+\begin{equation*}
+    F : \cat{Sch}_{k=\closure k}\to\cat{Set},
+\end{equation*}
+where
+\begin{equation*}
+    F(k) = \{\text{objects we want to parametrize}\},
+\end{equation*}
+e.g. curves. We need to decide what $F(T)$ is for general $T$.
+
+The dream outcome is then
+\begin{enumerate}[label=(\Roman*)]
+    \item $F\cong_\Phi\Hom(-,\M)$ for some $\M$, so $k$-points of $\M$ are the
+        objects we want to classify.
+    \item There is a universal family $\U\to\M$ (the distinguished element of
+        $F(\M)$) s.t. $s\in F(T)$, $\Phi(s):T\to M$ corresponds to a pullback
+        family $\U\times_\M T\to T$.
+\end{enumerate}
+For example, for curves $\U\to\M$ should have fiber over a point of $\M$ given
+by the corresponding curve. To ensure such an $\M$ exists we need to know what a
+``good'' curve is (we can't hope to classify all curves), and also what a
+``good'' \emph{family} of curves is, to define $F(T)$. Since a family of curves
+is a morphism of relative dimension one, we think of the moduli of curves as
+being really the moduli of morphisms of relative dimension one.
+
+What ``goodness'' do we need?
+\begin{enumerate}[label=\arabic*)]
+    \item A positivity constraint (e.g. something being ample).
+        For curves: $g\ge2$; $\omega_C$ ample.
+
+    \item A singularity constraint. (We want $\M$ to be separated and proper.)
+\end{enumerate}
+So we care about singularities of morphisms.
+
+\begin{definition}
+    A morphism $f:X\to T$ where $T$ is a curve is \emph{locally stable} if it is
+    flat, and $(X,f^{-1}(t))$ is (semi) log-canonical for all $t\in T$.
+\end{definition}
+
+By adjunction, this is equivalent to the fibres being (semi) log-canonical. (If
+$\dim(X/T)=1$ this is equivalent to the fibres being nodal curves.)
+
+\begin{definition}
+    A morphism $f:X\to T$ is \emph{stable} if it is locally stable and $K_X$ is
+    $f$-ample (i.e. $K_X+f^*D$ is ample for some $D$).
+\end{definition}
+
+Semi-stable implies stable, but the converse may fail: $f:\A^3\to\A^1$,
+$(x,y,z)\mapsto x^3+y^3+z^3$ is locally stable but not semi-stable.
+
+\begin{example}
+    Fix $C$ of genus at least 2. Consider $C\times\A^1\to\A^1$, and blowup a
+    single point on $C\times\{0\}$. Write $E$ for the exceptional divisor, which
+    is a copy of $\P^1$, and $C'$ for the strict transform of $C$. We have
+    $(C')^2=-1$, since $0=C^2$ so $(C'+E)^2=0$, and by Grauert / Artin we can
+    contract $C'$ to a point. The result has a very bad singularity from $C'$,
+    and is no longer locally stable.
+\end{example}
+
+If we allowed this family in our moduli functor, then the point corresponding to
+$\P^1$ would be in the closure of the point corresponding to $C$. This would be
+true for all such $C$, so $\M$ would be badly non-separated. Hence we need the
+local stability condition for $\M$ to be separated.
+
+Without the positivity condition, we can do a similar thing repeatedly blowing
+up points on $C\times\A^1$ to get infinitely many distinct curves in the closure
+of the point corresponding to $C$, which would prevent $\M$ from being finite
+type.
+
+\begin{theorem}
+    Stable curves with fixed geometric genus form a good moduli space
+    $\closure{\M_g}$.
+\end{theorem}
+
+(Due to recent work this is true for higher dimensional varieties if you replace
+genus with volume.)
+
+\begin{theorem}
+    The moduli space of stable curves is separated and proper.
+\end{theorem}
+
+\begin{proof}
+    For properness, use the valuative criterion:
+    \begin{equation*}
+        \begin{tikzcd}[column sep=huge]
+            X^0 \ar[d,"\text{stable family}"'] \ar[r,dashed] & X \ar[d] \\
+            C^0 \ar[r,hook] & C.
+        \end{tikzcd}
+    \end{equation*}
+    We want to complete a stable family over $C^0=C\setminus\{p\}$ to a stable
+    family over $C$.
+    \begin{itemize}
+        \item Step 1: Complete $X^0$ to some family $Y\to C$ (e.g. embed in
+            projective space over $C$ and take closure).
+
+        \item Step 2: Take a semi-stable reduction of $Y\to C$.
+            \begin{equation*}
+                \begin{tikzcd}[column sep=huge]
+                    Y' \ar[r,"\text{bir.}"] \ar[dr,"g","\text{semi-stable}"'] &
+                    Y\times_CC' \ar[d] & Y \ar[d] \\
+                                       & C' \ar[r,"\text{finite}"] & C.
+                \end{tikzcd}
+            \end{equation*}
+            (Finite base-change is allowed, stack not a scheme.) Then $Y'\to C'$
+            is locally stable, but $K_{Y'}$ may not be ample over $C'$.
+
+        \item Step 3: We want to restore ampleness by contracting all curves $E$
+            in $Y'$ s.t. $g(E)$ is a point and $K_{Y'}\cdot E\le0$. This can be
+            fixed by the MMP.
+    \end{itemize}
+    For separatedness (uniqueness of lifts) we use uniqueness from MMP.
+\end{proof}
+
+If $C$ is a stable curve, then $\omega_C^{\otimes 3}$ is very ample, and as an
+exercise one can check that $h^0(\omega_C^{\otimes 3})=5g-5$. Choosing a basis
+$\{\sigma_i\}$ for $H^0(\omega_C^{\otimes 3})$ gives an embedding
+$C\hookrightarrow\P^{5g-6}$, so every stable curve embeds with degree $6g-6$ in
+$\P^{5g-6}$. Hence there is a component of the Hilbert scheme $H$ of $\P^{5g-6}$
+containing all these curves.
+
+\paragraph{Problem 1.} $H$ has points not corresponding to stable curves.
+
+\paragraph{Problem 2.} This presentation depends on the choice of basis, so each
+stable curves appears many times in $H$. (The stabilizer is $\PGL(5g-5)$.)
+
+~
+
+So we want a suitable open locus within a suitable quotient $H/\PGL(5g-5)$.
+Mumford developed ``geometric invariant theory'' (GIT), which defines a subset
+$H^s\subseteq H$ of ``GIT stable'' points, and a Deligne-Mumford stack
+$H^s\sslash\PGL(5g-5)$ which is a suitable quotient of $H$ by $\PGL(5g-5)$. As a
+miracle, the set of GIT stable points $H^s$ is precisely the set of points
+corresponding to stable curves. In higher dimensions this doesn't hold.
 
 \end{document}
