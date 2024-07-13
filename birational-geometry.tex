@@ -17,6 +17,7 @@
 \newtheorem*{corollary}{Corollary}
 \newtheorem*{lemma}{Lemma}
 \newtheorem*{proposition}{Proposition}
+\newtheorem*{claim}{Claim}
 
 \theoremstyle{definition}
 \newtheorem*{definition}{Definition}
@@ -25,8 +26,10 @@
 \newtheorem*{exercise}{Exercise}
 
 \DeclareMathOperator{\PGL}{PGL}
+\DeclareMathOperator{\SL}{SL}
 \DeclareMathOperator{\Bl}{Bl}
 \DeclareMathOperator{\Spec}{Spec}
+\DeclareMathOperator{\Spf}{Spf}
 \DeclareMathOperator{\Supp}{Supp}
 \DeclareMathOperator{\exc}{exc}
 \DeclareMathOperator{\supp}{supp}
@@ -39,8 +42,11 @@
 
 \newcommand{\closure}[1]{\overline{#1}}
 \newcommand{\cat}[1]{\mathsf{#1}}
+\newcommand{\series}[2]{#1[\![#2]\!]}
 
 \newcommand{\sm}{\mathrm{sm}}
+\newcommand{\can}{\mathrm{can}}
+\newcommand{\minm}{\mathrm{min}}
 \newcommand{\Diff}{\mathrm{Diff}}
 
 \newcommand{\U}{\mathcal{U}}
@@ -874,5 +880,182 @@ $H^s\subseteq H$ of ``GIT stable'' points, and a Deligne-Mumford stack
 $H^s\sslash\PGL(5g-5)$ which is a suitable quotient of $H$ by $\PGL(5g-5)$. As a
 miracle, the set of GIT stable points $H^s$ is precisely the set of points
 corresponding to stable curves. In higher dimensions this doesn't hold.
+
+\section*{Misc}
+
+\subsection*{Big and pseff divisors}
+
+Recall in the previous section we had a locally stable fibration in curves
+$X\to C$, and we needed to contract all the curves $\Sigma$ with
+$K_X\cdot\Sigma\le0$. The following definition is in some sense a weakening of
+the notion of ample divisors:
+
+\begin{definition}
+    A divisor $D$ is \emph{big} if $mD\sim A+E$ for some $m\ge0$, where $A$ is
+    ample and $E$ is effective.
+\end{definition}
+
+\begin{remark}
+    A big divisor is not necessarily numerically effective, e.g. if $C$ is a
+    curve in a surface with $C^2<0$, then $(A+nC)\cdot C<0$ for $n\gg0$.
+\end{remark}
+
+Suppose $p:X\to X'$ is a non-trivial birational morphism. If $A$ is ample, then
+$p^*A$ is not ample, since $p^*A\cdot E=0$ for each exceptional curve $E$.
+(Recall the Nakai--Moishezon criterion: $A$ is ample iff $A^{\dim V}\cdot V>0$
+for all subvarieties $V$, assuming $A$ is Cartier and the variety is proper.
+This is equivalent to requiring that $A|_V$ is big for all $V$.) However, we do
+get that $D$ big implies $p^*D$ big. In parallel with bigness weakening the
+notion of ampleness, we have a weakening of the notion of effectiveness:
+
+\begin{definition}
+    A divisor $D$ is \emph{pseudo-effective}, or $\emph{pseff}$, if
+    $D\cdot A_1\cdot\cdots\cdot A_{\dim X-1}\ge0$ whenever
+    $A_1,\ldots,A_{\dim X-1}$ are ample.
+\end{definition}
+
+\begin{remark}
+    A divisor on a curve is pseff iff its degree is non-negative.
+\end{remark}
+
+\begin{remark}
+    Effective divisors are pseudo-effective, but the converse fails: if $p,q$
+    are general points on an elliptic curve, then $p-q$ is pseudo-effective but
+    not effective.
+\end{remark}
+
+\subsection*{Contracting curves}
+
+Suppose $X$ is a smooth surface, with $K_X$ pseff, but $K_X\cdot C<0$ for some
+curve $C$.
+
+\begin{claim}
+    $C^2<0$.
+\end{claim}
+
+\begin{proof}
+    Let $A$ be ample. Then $A+mK_X$ is big for $m\gg0$. (This is not obvious,
+    but big divisor plus a pseff divisor is big.) Hence $A+mK_X\sim_\Q A'+E'$
+    for $m\gg0$, where $A'$ is $\Q$-ample and $E'$ is $\Q$-effective, which
+    gives
+    \begin{equation*}
+        E'\cdot C < (A'+E')\cdot C = (A+mK_X)\cdot C < 0.
+    \end{equation*}
+    This is only possible if $C$ is in the support of $E'$ with $C^2<0$.
+\end{proof}
+
+Note that from adjunction we have $K_C+\Diff=(K_X+C)\cdot C<0$, so $K_C$ is
+negative meaning $C$ must be $\P^1$, with $K_C=-2$. (A priori $C$ is singular,
+but since $\P^1$ is smooth we see that $\Diff=0$ and classical adjunction
+holds.)
+
+~
+Note that if $b:S'\to S$ is the blowup of a surface at a smooth point with
+exceptional divisor $C$, then $C^2=K_{S'}\cdot C=-1$.
+
+\begin{theorem}[Castelnuovo's criterion]
+    Suppose $X$ is a surface, with a curve $C$ such that $C^2=K_X\cdot C=-1$.
+    Then there exists a blowup $b:X\to Y$ at a smooth point of $Y$ with
+    exceptional divisor $C$.
+\end{theorem}
+
+\begin{proof}
+    Let $\widehat X$ be the formal completion of $X$ along $C$, i.e. the ringed
+    space $(\P^1,\varprojlim_n\O_X/\O_C(-nC))$. If $X_n$ is the $n$th
+    infinitesimal neighbourhood, we have a SES
+    \begin{equation*}
+        0 \to \O_C(-nC) \to \O_{X_n} \to \O_{X_{n-1}} \to 0,
+    \end{equation*}
+    and $\O_C(-nC)=\O_{\P^1}(n)$ since $C=\P^1$ as argued above. Now
+    $H^1(\P^1,\O(n))=0$ for $n\ge0$, so the SES splits, and hence
+    \begin{equation*}
+        \Gamma(\widehat X,\O_{\widehat X})
+            = \Gamma(\P^1,\prod_{n\ge0}\O_{\P^1}(n))
+            = \series{\C}{x,y}.
+    \end{equation*}
+    So we get $\widehat X\to\widehat{\A^2}=\Spf\series{\C}{x,y}$. In fact
+    $\widehat X\to\widehat{\A^2}$ is the completion of the blowup of $\A^2$ at a
+    point. By Artin approximation this extends to a morphism $X\to Y$ where $Y$
+    is smooth. We can push an ample line bundle on $X$ forward to see that $Y$
+    is projective.
+\end{proof}
+
+\begin{remark}
+    Every smooth 2-dimensional algebraic space is projective, which follows from
+    MMP.
+\end{remark}
+
+\subsection*{MMP for surfaces}
+
+Suppose $X$ is a smooth surface, and $K_X$ is pseff. The MMP runs as follows: if
+there is a curve $C$ with $K_X\cdot C<0$, then by Castelnuovo's criterion we can
+contract it. Otherwise we stop, and $X$ is the minimal model. ($K_X$ may not be
+ample.)
+
+Since $\dim H_2(X,\R)$ drops with each contraction, the algorithm terminates.
+(Note that $[C]$ is non-zero in $H_2(X,\R)$ since $C\cdot K_X\ne0$.)
+
+\begin{remark}
+    If $K_X$ is not pseff we can do the same thing, instead terminating in a Mori
+    fiber space (for surfaces this is $\P^2$ or a $\P^1$-bundle.) The
+    challenge is finding which curves are $(-1)$-curves.
+\end{remark}
+
+We write $X\to X_\minm$ for the minimal model.
+
+\begin{remark}
+    If $K_X$ is pseff, then $K_{X_\minm}$ is nef ($K_{X_\minm}\cdot C\ge0$ for all
+    $C$.) If $K_X$ is not pseff then running the algorithm always results in a
+    Mori fiber space.
+\end{remark}
+
+\begin{definition}
+    A Mori fiber space is a space $X$ with a morphism $f:X\to Y$ such that
+    $f_*\O_X=\O_Y$, $\dim X>\dim Y$, $\rho(X)-\rho(Y)=1$ and $-K_X$ is
+    $f$-ample.
+\end{definition}
+
+\begin{theorem}
+    If $f:X\to Y$ is a projective morphism, and $A$ is ample on $Y$, then
+    $f^*A$ is nef.
+\end{theorem}
+
+\begin{remark}
+    $K_{X_\minm}$ is not necessarily ample.
+\end{remark}
+
+\begin{theorem}
+    If $X$ is a smooth surface, $K_X$ nef implies $K_X$ is semi-ample, i.e.
+    there is a morphism $f:X\to Y$ with $K_X\sim_\Q f^*A$ for some ample $A$.
+\end{theorem}
+
+If $Y$ is a point then $K_X\sim\Q0$, and if $Y$ is a curve then $X\to Y$ is an
+elliptic fibration. If $Y$ is a surface we call $Y$ the canonical model
+$X_\can$.
+
+\begin{remark}
+    If $K_X$ is pseff but not big, we get $\dim Y\le1$. If $K_X$ is big we get a
+    canonical model.
+\end{remark}
+
+The point of canonical models is that $K_{X_\can}$ is ample. We can then apply
+this for showing that the moduli space of curves is proper. Recall we had a
+family $X^0\to C^0=C\setminus\{0\}$ to extend over $C$.
+\begin{enumerate}
+    \item Complete to get $\closure X\to C$.
+    \item Apply semi-stable reduction to get $X'\to C$.
+    \item Go to a canonical model $X'\to X\to C$.
+\end{enumerate}
+Then $X\to C$ is the family we want.
+
+\begin{remark}
+    $X_\can$ is usually singular, but has mild (canonical) singularities, e.g.
+    Du Val singularities.
+\end{remark}
+
+\begin{remark}
+    For surfaces, the singularities of $X_\can$ are analytically locally of the
+    form $\C^2/G$ with $G\le\SL_2(\C)$.
+\end{remark}
 
 \end{document}
